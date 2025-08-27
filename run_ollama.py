@@ -106,7 +106,7 @@ def main():
     parser.add_argument('--model_name', default='llama3.3', help="Model name (default: llama3.3)")
     args = parser.parse_args()
 
-    ollama_client = ollama.Client(host='http://127.0.0.1:13422')
+    ollama_client = ollama.Client(host='http://127.0.0.1:18199')
 
     # Load input data
     df_treatment = pd.read_csv(args.input_file)
@@ -147,3 +147,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
