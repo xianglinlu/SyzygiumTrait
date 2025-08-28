@@ -18,12 +18,12 @@ The processing LLM is OLLAMA; we also experimented with chatGPT pro (medium leve
 We took part of the Calamus script as a prototype and further modified it to fit in our material, hoping to meet universal needs, not just specific for one type of article or genus. The original Calamus code is highly fitted for the Calamus monograph [Henderson. 2020]. The Calamus monograph is unusual as it includes an extensive appendix (a trait matrix) with value ranking standard for each trait. Our literature resources do not include these elements. As a result our workflow had fewer steps, as we only extracted the pure text and used the LLM to split it and fill it into corresponding cells. 
 In this project I modified the Calamus code. I deleted all functions that were too specific for the input files, preventing hard-coding. I also rewrote the prompt. The original prompt linked to custom made dictionaries for each trait (according to the matrices). Instead, my prompt returns the original content of the literature word for word (verbatim). 
 
-How to Run the Scripts
+## How to Run the Scripts
 The scripts require connection to a LLM on a HPC cluster. Follow these instructions for installation LLM install on HPC
 The following instructions assume that you have cloned the repository to a machine where you have: (a) a local installation of Python, (b) the build tool make and (c) a command line terminal program to run the following commands:
-Set up a virtual environment: python -m venv env and activate it: source env/Scripts/activate
-Install the libraries: pip install -r requirements.txt
-Copy your source PDF to the directory, simplify the file name (eg. Syzygium.pdf)
+Set up a virtual environment: python -m venv env and activate it: `source env/Scripts/activate`
+Install the libraries: `pip install -r requirements.txt`
+Copy your source PDF to the directory, simplify the file name (eg. `Syzygium.pdf`)
 In the directory, run the extraction script:  python extract_text.py SOURCE_FILE_NAME.pdf EXTRACTED_TEXT_FILE_NAME.csv 
 This step extract texts in pdf and list them line by line to one csv file
 Open an editor, modify the PROMPT section in run_ollama.py to meet your demand, and save it.
@@ -34,7 +34,7 @@ This step use LLM to organize species’ information automatically.
 
 Tip: use the --model_name option to run the scripts with a different ollama model. Default is set to llama3.3
 
-Result
+## Result
 Automatically ignore unrelated content
 CalamusTrait cleaned up all of the unrelated content (footer, header, caption etc). However, in this project, we tried to delete the function because it’s too specific for different materials. 
 It turns out that, though the input text is not pure enough, OLLAMA can recognize the main points of description and extract them well.
