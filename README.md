@@ -8,7 +8,8 @@ In the era of AI, it’s possible to deal with this issue with LLM. We want to d
 
 Kew Science is committed to assemble Floristic accounts of Syzygium for several southeast Asian regional Floras. This project uses digitally available taxonomic literature and Large Language Models to mobilise trait data for its use in preparation of the Flora of Singapore.
 
-## Timeline
+##  Material
+### Code Reference
 July 2025: [Amy Fiddes](https://github.com/amyfiddes)  and [Nicky Nicolson](https://github.com/nickynicolson) just finished a similar project [CalamusTraits](https://github.com/KewBridge/CalamusTraits), exploring how to use LLMs to transition between trait matrices and textual descriptions of Calamus species, with the aim of speeding up the taxonomic process. Below is a simplified flow chart to explain how Amy and Nicky extract and structure the information of Calamus.
 ```mermaid
 flowchart LR
@@ -26,9 +27,10 @@ flowchart LR
 ```
 <p align="center">Fig1. flow chart of CalamusTraits’ extraction part<p>
 
-## Literature Sources
+### Literature Sources
 The original list of species for treating in the Flora of Singapore was taken from {eve to add the paper}. 
 33 of these species have descriptions in two floristic accounts, these are A revision of Syzygium [Sol and Parnell. 2015.] & Tree Flora of Sabah and Sarawak [Soepadmo et al. 2011.] Protologues were accessed from the biodiversity heritage library (BHL). 
+
 
 ## Process
 The processing LLM is OLLAMA. We took part of the Calamus script as a prototype and further modified it to fit in our material, hoping to meet universal needs, not just specific for one type of article or genus. The original Calamus code is highly fitted for the Calamus monograph [Henderson. 2020]. The Calamus monograph is unusual as it includes an extensive appendix (a trait matrix) with value ranking standard for each trait. Our literature resources do not include these elements. As a result, our workflow had fewer steps, as we only extracted the pure text and used the LLM to split it and fill it into corresponding cells. 
