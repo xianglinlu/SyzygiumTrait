@@ -29,13 +29,15 @@ flowchart LR
 
 ### Literature Sources
 The original list of species for treating in the Flora of Singapore was taken from {eve to add the paper}. 
-33 of these species have descriptions in two floristic accounts, these are [A revision of Syzygium](https://bioone.org/journals/adansonia/volume-37/issue-2/a2015n2a1/A-revision-of-Syzygium-Gaertn-Myrtaceae-in-Indochina-Cambodia-Laos/10.5252/a2015n2a1.full) & Tree [Flora of Sabah and Sarawak](https://archive.org/details/treefloraofsabah0000unse) Protologues were accessed from the biodiversity heritage library (BHL). 
+33 of these species have descriptions in two floristic accounts, these are [A revision of Syzygium](https://bioone.org/journals/adansonia/volume-37/issue-2/a2015n2a1/A-revision-of-Syzygium-Gaertn-Myrtaceae-in-Indochina-Cambodia-Laos/10.5252/a2015n2a1.full) & [Tree Flora of Sabah and Sarawak](https://archive.org/details/treefloraofsabah0000unse) Protologues were accessed from the biodiversity heritage library (BHL). 
 
 
 ## Process
-The processing LLM is OLLAMA. We took part of the Calamus script as a prototype and further modified it to fit in our material, hoping to meet universal needs, not just specific for one type of article or genus. The original Calamus code is highly fitted for the Calamus monograph [Henderson. 2020]. The Calamus monograph is unusual as it includes an extensive appendix (a trait matrix) with value ranking standard for each trait. Our literature resources do not include these elements. As a result, our workflow had fewer steps, as we only extracted the pure text and used the LLM to split it and fill it into corresponding cells. 
+The processing LLM is OLLAMA. We took part of the Calamus script as a prototype and further modified it to fit in our material, hoping to meet universal needs, not just specific for one type of article or genus. 
 
-In this project I modified the Calamus code. I deleted all functions that were too specific for the input files, preventing hard-coding. I also rewrote the prompt. The original prompt linked to custom made dictionaries for each trait (according to the matrices). Instead, my prompt returns the original content of the literature word for word (verbatim). 
+The original Calamus code is highly fitted for the Calamus monograph [Henderson. 2020]. The Calamus monograph is unusual as it includes an extensive appendix (a trait matrix) with value ranking standard for each trait. Our literature resources do not include these elements. As a result, our workflow had fewer steps, as we only extracted the pure text and used the LLM to split it and fill it into corresponding cells. 
+
+In this project, I modified the Calamus code. I deleted all functions that were too specific for the input files, preventing hard-coding. I also rewrote the prompt. The original prompt linked to custom made dictionaries for each trait (according to the matrices). Instead, my prompt returns the original content of the literature word for word (verbatim). 
 
 ## How to Run the Script
 
@@ -64,7 +66,8 @@ The following instructions assume that you have cloned the repository to a machi
 
 Extra preparation if you are going to try your own material:
 * Ensure to copy your source PDF file to the directory.
-* Open an editor, modify the PROMPT section in run_ollama.py to meet your demand, and save it.
+* In `extrac_test.py`, modify the regEx (line 14 and line 24) to find your target genus correctly, then save it.
+* In `run_ollama.py`, modify the PROMPT section to meet your output demand, and save it.
 
 ### Run the script
 1. Activate the virtual environment
