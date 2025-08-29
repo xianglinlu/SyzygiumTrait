@@ -9,16 +9,30 @@ In the era of AI, it’s possible to deal with this issue with LLM. We want to d
 Kew Science is committed to assemble Floristic accounts of Syzygium for several southeast Asian regional Floras. This project uses digitally available taxonomic literature and Large Language Models to mobilise trait data for its use in preparation of the Flora of Singapore.
 
 ## Timeline
-July 2025: Amy Fiddes and Nicky Nicolson just finished a similar project [CalamusTraits](https://github.com/KewBridge/CalamusTraits), exploring how to use LLMs to transition between trait matrices and textual descriptions of Calamus species, with the aim of speeding up the taxonomic process. 
+July 2025: [Amy Fiddes](https://github.com/amyfiddes)  and [Nicky Nicolson](https://github.com/nickynicolson) just finished a similar project [CalamusTraits](https://github.com/KewBridge/CalamusTraits), exploring how to use LLMs to transition between trait matrices and textual descriptions of Calamus species, with the aim of speeding up the taxonomic process. Below is a simplified flow chart to explain how Amy and Nicky extract and structure the information of Calamus.
+```mermaid
+flowchart LR
+    classDef rounded fill:#fff,stroke:#000,stroke-width:2px,color:#000,rx:10,ry:10;
+    
+    A["**Botanical Monograph** <br> <small>A Revision of *Calamus* <br> (Henderson, 2020)<small>"] 
+        ==> 
+        B[**Extract Relevant Sections**<br><small>Appendix 1<br>Appendix 2<br>Species Descriptions</small>]
 
-Fig. flow chart of CalamusTraits’ extraction part
-Fig is a simplified flow chart to explain how Amy and Nicky extract and structure the information of Calamus. 
+    B ==> C[**Process with Large Language Model**]
+
+    C ==> D[**Structured Trait Information**]
+
+    class A,B,C,D rounded;
+```
+<p align="center">Fig1. flow chart of CalamusTraits’ extraction part<p>
 
 ## Literature Sources
-The original list of species for treating in the Flora of Singapore was taken from {eve to add the paper}. 33 of these species have descriptions in two floristic accounts, these are A revision of Syzygium [Sol and Parnell. 2015.] & Tree Flora of Sabah and Sarawak [Soepadmo et al. 2011.] Protologues were accessed from the biodiversity heritage library (BHL). 
-Process
-The processing LLM is OLLAMA; we also experimented with chatGPT pro (medium level)
-We took part of the Calamus script as a prototype and further modified it to fit in our material, hoping to meet universal needs, not just specific for one type of article or genus. The original Calamus code is highly fitted for the Calamus monograph [Henderson. 2020]. The Calamus monograph is unusual as it includes an extensive appendix (a trait matrix) with value ranking standard for each trait. Our literature resources do not include these elements. As a result our workflow had fewer steps, as we only extracted the pure text and used the LLM to split it and fill it into corresponding cells. 
+The original list of species for treating in the Flora of Singapore was taken from {eve to add the paper}. 
+33 of these species have descriptions in two floristic accounts, these are A revision of Syzygium [Sol and Parnell. 2015.] & Tree Flora of Sabah and Sarawak [Soepadmo et al. 2011.] Protologues were accessed from the biodiversity heritage library (BHL). 
+
+## Process
+The processing LLM is OLLAMA. We took part of the Calamus script as a prototype and further modified it to fit in our material, hoping to meet universal needs, not just specific for one type of article or genus. The original Calamus code is highly fitted for the Calamus monograph [Henderson. 2020]. The Calamus monograph is unusual as it includes an extensive appendix (a trait matrix) with value ranking standard for each trait. Our literature resources do not include these elements. As a result, our workflow had fewer steps, as we only extracted the pure text and used the LLM to split it and fill it into corresponding cells. 
+
 In this project I modified the Calamus code. I deleted all functions that were too specific for the input files, preventing hard-coding. I also rewrote the prompt. The original prompt linked to custom made dictionaries for each trait (according to the matrices). Instead, my prompt returns the original content of the literature word for word (verbatim). 
 
 ## How to Run the Script
@@ -72,17 +86,26 @@ Extra preparation if you are going to try your own material:
    Tip: use the --model_name option to run the scripts with a different ollama model. Default is set to llama3.3
 
 ## Result
-Automatically ignore unrelated content
-CalamusTrait cleaned up all of the unrelated content (footer, header, caption etc). However, in this project, we tried to delete the function because it’s too specific for different materials. 
-It turns out that, though the input text is not pure enough, OLLAMA can recognize the main points of description and extract them well.
-Transform unit
+The results have not been fully manually validated, so errors may exist due to LLM extraction or source inconsistencies.
 
-Same prompt, but ChatGPT doesn’t work.
-We put the same prompt into ChatGPT, and the result 
-Coverage/Accuracy
-Discussion/notes/comments
-Problems with chatGPT
-Anything else
-The results have not been fully manually validated
-Errors may exist due to LLM extraction or source inconsistencies
-Future work should include thorough validation and integration with curated biodiversity databases
+Future work should include thorough validation and integration with curated biodiversity databases.
+
+### Automatically ignore unrelated content
+
+CalamusTrait cleaned up all of the unrelated content (footer, header, caption etc). However, in this project, we tried to delete the cleaning function because it’s too specific for different materials. 
+It turns out that, though the input text is not pure enough, OLLAMA can recognize the main points of description and extract them well. 
+
+### Unit transformation
+
+We notice that ollama can transform units wisely. For example,  
+
+### Redundant cloumns
+W
+
+### Same prompt, but ChatGPT doesn’t work
+We also experimented the same prompt, same extracted csv file with chatGPT pro (medium level), to test if ChatGPT could make the same output  
+We put the same prompt into ChatGPT, and it ususally return 
+
+### Coverage/Accuracy
+
+
