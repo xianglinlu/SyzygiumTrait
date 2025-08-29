@@ -29,7 +29,7 @@ flowchart LR
 
 ### Literature Sources
 The original list of species for treating in the Flora of Singapore was taken from {eve to add the paper}. 
-33 of these species have descriptions in two floristic accounts, these are A revision of Syzygium [Sol and Parnell. 2015.] & Tree Flora of Sabah and Sarawak [Soepadmo et al. 2011.] Protologues were accessed from the biodiversity heritage library (BHL). 
+33 of these species have descriptions in two floristic accounts, these are [A revision of Syzygium](https://bioone.org/journals/adansonia/volume-37/issue-2/a2015n2a1/A-revision-of-Syzygium-Gaertn-Myrtaceae-in-Indochina-Cambodia-Laos/10.5252/a2015n2a1.full) & Tree [Flora of Sabah and Sarawak](https://archive.org/details/treefloraofsabah0000unse) Protologues were accessed from the biodiversity heritage library (BHL). 
 
 
 ## Process
@@ -99,15 +99,14 @@ It turns out that, though the input text is not pure enough, OLLAMA can recogniz
 
 ### Unit transformation
 
-We notice that ollama can transform units wisely. For example,  
+We notice that ollama can transform units wisely. For example, in [Sol and Parnell. 2015.], it described inflorescence length of *Syzygium abortivum* as "1.3cm to 1.5cm". In prompt, We accidently set this trait column to "mm" instead of "cm". Out of our surprise, ollama automatically transform it to "13 - 15". And it works for all of the cells we've observed.
 
-### Redundant cloumns
-W
+### Redundant species and column of trait
+We 
 
 ### Same prompt, but ChatGPT doesn’t work
-We also experimented the same prompt, same extracted csv file with chatGPT pro (medium level), to test if ChatGPT could make the same output  
-We put the same prompt into ChatGPT, and it ususally return 
+We also experimented the same prompt, same extracted csv file with chatGPT, to test if ChatGPT could make the similiar output as ollama did. At very begining of this project, my ChatGPT free account could deal with 5 species and return a accurate, comprehensive result. However, this little prefect result only appeared once. It's unrepeatedable. We use other account to buy ChatGPT pro (medium level), it return very few content, even whole blank sometimes. 
 
-### Coverage/Accuracy
+I personlly think it resulted from the different generate logic behind ollama and ChatGPT, and it's worth further exploration. 
 
 
