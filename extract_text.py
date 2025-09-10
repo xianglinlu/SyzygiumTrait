@@ -3,7 +3,13 @@ import argparse
 import pandas as pd
 import re
 
-def extractSyzygiumSpeciesName(s):
+TREATMENT_START_PATTERN_NUMBERED = r'^\s*[0-9]+\.\s(Syzygium\s+[a-z\-]+).*$'
+# An un-numbered species treatement will have a binomial starting the line
+# followed by a space and an opening bracket for a parenthetical author citation
+# or a simple author citation
+TREATMENT_START_PATTERN_UNNUMBERED = r'^\s*(Syzygium\s+[a-z\-]+)\s+\(.*\).*$|^\s*(Syzygium\s+[a-z\-]+)\s+[A-Z].*$'
+
+def extractSyzygiumSpeciesName(s, speciesAccountsNumbered=True):
     """
     Extract species name from a line that starts a Syzygium taxonomic treatment.
     Looks for 'Syzygium' followed by one Latin species epithet.
@@ -11,7 +17,9 @@ def extractSyzygiumSpeciesName(s):
     speciesName = None
     if s is not None:
         # Match lines starting with "Syzygium" followed by a lowercase species epithet
-        patt = r'^[0-9]+\.\s(Syzygium\s+[a-z\-]+).*$'
+        patt = TREATMENT_START_PATTERN_UNNUMBERED
+        if speciesAccountsNumbered:
+            patt = TREATMENT_START_PATTERN_NUMBERED
         m = re.match(patt, s).group(1)
         if m is not None:
             speciesName = m
@@ -19,9 +27,11 @@ def extractSyzygiumSpeciesName(s):
 
 
 
-def identifyTreatments(df):
+def identifyTreatments(df, speciesAccountsNumbered=True):
     # Define regular expression patterns to find the start lines of taxon treatments
-    species_treatment_patt = r'^[0-9]+\.\s(Syzygium\s+[a-z\-]+).*$'
+    species_treatment_patt = TREATMENT_START_PATTERN_UNNUMBERED
+    if speciesAccountsNumbered:
+        species_treatment_patt = TREATMENT_START_PATTERN_NUMBERED
 
     # Make a new column to hold the taxon_id_and_name
     df['taxon_id_and_name']=[None]*len(df)
@@ -33,11 +43,13 @@ def identifyTreatments(df):
 
     # As above - find the lines which indicate the start of an species treatment
     mask=(df.line.str.match(species_treatment_patt, case=True, flags=0, na=None))
+    print(df[mask][['page_number','line']])
     # Use the utility function to extract the taxon name and number from the text
     # of the line
     mask = (df.taxon_id_and_name.isnull() & mask)
-    df.loc[mask, 'taxon_id_and_name'] = df[mask].line.apply(extractSyzygiumSpeciesName)
+    df.loc[mask, 'taxon_id_and_name'] = df[mask].line.apply(extractSyzygiumSpeciesName, speciesAccountsNumbered=speciesAccountsNumbered)
 
+    
     # Fill down the taxon name and number values
     df.taxon_id_and_name = df.taxon_id_and_name.ffill()
 
@@ -56,11 +68,23 @@ def main():
     args = parser.parse_args()
     reader= PdfReader(args.input_file)
 
+    # Get the filename part of the input file using os filename
+    import os
+    input_filename = os.path.basename(args.input_file)
+    print(f"Input file: {input_filename}")
+
     # Extract pages and store with their page number in a dictionary
     pages = dict()
+
     for i, page in enumerate(reader.pages):
+        if i ==0:
+            continue  # Skip the first page
         page_number = page.page_number + 1
         page_text = page.extract_text()
+        try:
+            print(page_text)
+        except:
+            print(f"Could not print page {page_number}")
         pages[page_number] = page_text
 
     # Make a dataframe from the pages dictionary
@@ -78,14 +102,19 @@ def main():
     # page text can be dropped as no longer needed
     df_lines.drop(columns=['page_text'],inplace=True)
     
-    df_lines = identifyTreatments(df_lines)
+    # Determine if the literature contains numbered species accounts
+    speciesAccountsNumbered = bool(re.search(r'^\s*[0-9]+\.\s*Syzygium\s+[a-z\-]+.*$', df_lines.line.str.cat(sep='\n'), flags=re.MULTILINE))
+    print(f"Species accounts numbered: {speciesAccountsNumbered}")
+
+    df_lines = identifyTreatments(df_lines, speciesAccountsNumbered=speciesAccountsNumbered)
     df_treatments = df_lines.groupby('taxon_id_and_name') ['line'].agg(' '.join).reset_index()
 
 
     # Display the result
     print(df_treatments)
     print(type(df_treatments))
-    df_treatments.to_csv(args.output_file, encoding="utf-8-sig")
+    df_treatments['source_file'] = input_filename
+    df_treatments[['source_file', 'taxon_id_and_name', 'line']].to_csv(args.output_file, encoding="utf-8-sig",index=False)
 
 if __name__ == "__main__":
     main()
